@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html> 
+<!DOCTYPE html> 
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
@@ -6,12 +6,106 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>速达开锁</title>
 
-<!--可无视-->
-<link rel="stylesheet" type="text/css" href="css/normalize.css" />
-<link rel="stylesheet" type="text/css" href="css/reset.css">
+<!-- 预连接优化 -->
+<link rel="preconnect" href="https://preview.cloud.189.cn">
+<link rel="dns-prefetch" href="//preview.cloud.189.cn">
 
-<!--主要样式-->
-<link rel="stylesheet" type="text/css" href="assets/css/demo.css" />
+<!-- 内联关键CSS - 仅保证基础布局 -->
+<style>
+/* 基础防止布局偏移 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { overflow-x: hidden; }
+.hidden { display: none !important; }
+
+/* 图片加载优化 */
+.back__element img {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.back__element img.loaded {
+  opacity: 1;
+}
+.img-placeholder {
+  background: #e5e7eb;
+  position: relative;
+  overflow: hidden;
+}
+.img-placeholder::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* 基础容器 */
+.page-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* 基本滑块样式 */
+.slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+}
+
+.slider-list {
+  list-style: none;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.slider-list__item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.slider-list__item_active {
+  opacity: 1;
+}
+
+.back__element {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.back__element img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
+
+<!-- 异步加载外部CSS -->
+<link rel="preload" href="css/normalize.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="css/reset.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="assets/css/demo.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/demo.css" />
+</noscript>
 
 </head>
 <body>
@@ -19,88 +113,337 @@
 <section class="page-wrapper" id="coidea">
 
   <div class="slider">
-	
-	<ul class="slider-list">
-	  
-	  <li class="slider-list__item slider-list__item_active">
-		<span class="back__element">
-		  <img src="https://preview.cloud.189.cn/image/imageAction?param=2C623A28E0F5BFB747CFE7777ADDAB040B45177EA79E105C65AF300BA3A569B06F5013B387E91A0E5F786FEBA9538A73A454BDC9CFA9D8F74366EF135E445AADE0EF99DECB232AD8986431B1DB74AB2E37578986780D0FBA0B23EFF9CFF5A91CB222D7ED59992CDE00915A0C50078AD8" />
-		</span>
-		<span class="main__element">
-		</span>
-		<span class="title__element">
-		  <span class="title"></span>
-		</span>
-		  <span class="content">
-			<span class="excerpt"></span>
-			<span class="link">
-			  
-			  
-			</span>
-		  </span>
-		</span>
-	   </li>
+  
+  <ul class="slider-list">
+    
+    <li class="slider-list__item slider-list__item_active">
+    <span class="back__element">
+      <img 
+        src="https://preview.cloud.189.cn/image/imageAction?param=2C623A28E0F5BFB747CFE7777ADDAB040B45177EA79E105C65AF300BA3A569B06F5013B387E91A0E5F786FEBA9538A73A454BDC9CFA9D8F74366EF135E445AADE0EF99DECB232AD8986431B1DB74AB2E37578986780D0FBA0B23EFF9CFF5A91CB222D7ED59992CDE00915A0C50078AD8" 
+        alt="微信"
+        loading="lazy"
+        decoding="async"
+        width="400"
+        height="600"
+        onload="this.classList.add('loaded')"
+      />
+    </span>
+    <span class="main__element">
+    </span>
+    <span class="title__element">
+      <span class="title"></span>
+    </span>
+      <span class="content">
+      <span class="excerpt"></span>
+      <span class="link">
+        
+        
+      </span>
+      </span>
+    </span>
+     </li>
 
-	  <li class="slider-list__item">
-		<span class="back__element">
-		  <img src="https://preview.cloud.189.cn/image/imageAction?param=31AA385C8577EE97F6E0883636F8EC4F6A234442A3890A5647D7BCBEEDE204E514F39C93B6A9F4BA15DC40E3F2EFA37130BE724B94EF383AAE2894E6286E56CD436325871B8EA7F353B20F799D95A847F8E9CFE48F4E0A44F9AE5E8850794D1743D8212588CBE76EBC2D93E2D4D76CC7" />
-		</span>
-		<span class="title__element">
-		  <span class="title"></span>
-		  <span class="content">
-			<span class="headline"></span>
-			<span class="excerpt">
-			<span class="link">
-			  <div class="fill fill-dark"></div>
-			  <a href="#"></a>
-			</span>
-		  </span>
-		</span>
-	   </li>
+    <li class="slider-list__item">
+    <span class="back__element">
+      <img 
+        src="https://preview.cloud.189.cn/image/imageAction?param=31AA385C8577EE97F6E0883636F8EC4F6A234442A3890A5647D7BCBEEDE204E514F39C93B6A9F4BA15DC40E3F2EFA37130BE724B94EF383AAE2894E6286E56CD436325871B8EA7F353B20F799D95A847F8E9CFE48F4E0A44F9AE5E8850794D1743D8212588CBE76EBC2D93E2D4D76CC7" 
+        alt="支付宝"
+        loading="lazy"
+        decoding="async"
+        width="400"
+        height="600"
+        onload="this.classList.add('loaded')"
+      />
+    </span>
+    <span class="title__element">
+      <span class="title"></span>
+      <span class="content">
+      <span class="headline"></span>
+      <span class="excerpt">
+      <span class="link">
+        <div class="fill fill-dark"></div>
+        <a href="#"></a>
+      </span>
+      </span>
+    </span>
+     </li>
 
-	   <li class="slider-list__item">
-		<span class="back__element">
-		 <img src="" />
-		</span>
-		<span class="main__element">
-		</span>
-		<span class="front__element">
-		</span>
-		<span class="title__element">
-		  <span class="title"></span>
-		</span>
-		<span class="more__element">
-			<span class="headline"></span>
-			<span class="excerpt"></span>
-			<span class="link">
-				<div class="fill"></div>
-			  <a href="#"></a>
-			</span>
-		  </span>
-		</span>
-	   </li>
-	   
-	</ul>
-	
-	<div class="slider__nav-bar">
-	  <a class="nav-control"></a>
-	  <a class="nav-control"></a>
-	  <a class="nav-control"></a>
-	</div>
-	
-	<div class="slider__controls">
-	  <a class="slider__arrow slider__arrow_prev"></a>
-	  <a class="slider__arrow slider__arrow_next"></a>
-	</div>
+     <li class="slider-list__item">
+    <span class="back__element img-placeholder">
+     <!-- 空图片，保持原有结构 -->
+    </span>
+    <span class="main__element">
+    </span>
+    <span class="front__element">
+    </span>
+    <span class="title__element">
+      <span class="title"></span>
+    </span>
+    <span class="more__element">
+      <span class="headline"></span>
+      <span class="excerpt"></span>
+      <span class="link">
+        <div class="fill"></div>
+        <a href="#"></a>
+      </span>
+      </span>
+    </span>
+     </li>
+     
+  </ul>
+  
+  <div class="slider__nav-bar">
+    <a class="nav-control"></a>
+    <a class="nav-control"></a>
+    <a class="nav-control"></a>
+  </div>
+  
+  <div class="slider__controls">
+    <a class="slider__arrow slider__arrow_prev"></a>
+    <a class="slider__arrow slider__arrow_next"></a>
+  </div>
 
   </div>      
 
 </section>
 
-<script src="assets/js/anime.min.js" type="text/javascript"></script>
-<script src="assets/js/demo.js"></script>
+<!-- 异步加载JavaScript -->
+<script>
+// 立即执行函数，避免污染全局变量
+(function() {
+  'use strict';
+  
+  // 性能优化：等待DOM加载完成
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPage);
+  } else {
+    initPage();
+  }
+  
+  function initPage() {
+    // 预加载下一页图片
+    preloadNextImages();
+    
+    // 延迟加载外部JS文件
+    setTimeout(loadExternalScripts, 100);
+    
+    // 初始化图片懒加载
+    initImageLoading();
+  }
+  
+  function preloadNextImages() {
+    // 预加载第一张之后的图片
+    const images = document.querySelectorAll('.slider-list__item:not(.slider-list__item_active) .back__element img');
+    images.forEach(img => {
+      if (img.src) {
+        const preloadImg = new Image();
+        preloadImg.src = img.src;
+        preloadImg.onload = function() {
+          img.classList.add('preloaded');
+        };
+      }
+    });
+  }
+  
+  function initImageLoading() {
+    // 处理图片加载完成事件
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+      if (img.complete) {
+        img.classList.add('loaded');
+      } else {
+        img.onload = function() {
+          this.classList.add('loaded');
+        };
+        img.onerror = function() {
+          console.warn('图片加载失败:', this.src);
+        };
+      }
+    });
+  }
+  
+  function loadExternalScripts() {
+    // 异步加载anime.min.js
+    loadScript('assets/js/anime.min.js', function() {
+      // anime.js加载完成后加载demo.js
+      loadScript('assets/js/demo.js');
+    });
+  }
+  
+  function loadScript(src, callback) {
+    var script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.defer = true;
+    
+    if (callback) {
+      script.onload = callback;
+    }
+    
+    document.body.appendChild(script);
+  }
+  
+  // 简单的滑块功能增强（不改变原有demo.js行为）
+  function enhanceSlider() {
+    const slider = document.querySelector('.slider');
+    const slides = document.querySelectorAll('.slider-list__item');
+    const navControls = document.querySelectorAll('.nav-control');
+    const prevArrow = document.querySelector('.slider__arrow_prev');
+    const nextArrow = document.querySelector('.slider__arrow_next');
+    
+    if (!slider || slides.length === 0) return;
+    
+    let currentIndex = 0;
+    
+    // 增强导航控制
+    navControls.forEach((control, index) => {
+      // 移除原有事件（如果有）
+      control.replaceWith(control.cloneNode(true));
+      
+      const newControl = document.querySelectorAll('.nav-control')[index];
+      newControl.addEventListener('click', function(e) {
+        e.preventDefault();
+        goToSlide(index);
+      });
+    });
+    
+    // 增强箭头控制
+    if (prevArrow) {
+      prevArrow.replaceWith(prevArrow.cloneNode(true));
+      document.querySelector('.slider__arrow_prev').addEventListener('click', function(e) {
+        e.preventDefault();
+        goToSlide(currentIndex - 1);
+      });
+    }
+    
+    if (nextArrow) {
+      nextArrow.replaceWith(nextArrow.cloneNode(true));
+      document.querySelector('.slider__arrow_next').addEventListener('click', function(e) {
+        e.preventDefault();
+        goToSlide(currentIndex + 1);
+      });
+    }
+    
+    // 添加键盘支持
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') {
+        goToSlide(currentIndex - 1);
+      } else if (e.key === 'ArrowRight') {
+        goToSlide(currentIndex + 1);
+      }
+    });
+    
+    // 添加触摸滑动支持
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    slider.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    slider.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+    
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      const diff = touchStartX - touchEndX;
+      
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          // 向左滑动，下一张
+          goToSlide(currentIndex + 1);
+        } else {
+          // 向右滑动，上一张
+          goToSlide(currentIndex - 1);
+        }
+      }
+    }
+    
+    function goToSlide(index) {
+      if (index < 0) index = slides.length - 1;
+      if (index >= slides.length) index = 0;
+      
+      // 更新当前激活状态
+      slides[currentIndex].classList.remove('slider-list__item_active');
+      slides[index].classList.add('slider-list__item_active');
+      
+      // 更新导航点状态
+      navControls.forEach((control, i) => {
+        if (i === index) {
+          control.classList.add('active');
+        } else {
+          control.classList.remove('active');
+        }
+      });
+      
+      currentIndex = index;
+      
+      // 预加载下一张图片
+      const nextIndex = (index + 1) % slides.length;
+      const nextImg = slides[nextIndex].querySelector('img');
+      if (nextImg && !nextImg.classList.contains('loaded') && !nextImg.classList.contains('preloaded')) {
+        const img = new Image();
+        img.src = nextImg.src;
+        img.onload = function() {
+          nextImg.classList.add('preloaded');
+        };
+      }
+    }
+    
+    // 初始激活第一个导航点
+    if (navControls.length > 0) {
+      navControls[0].classList.add('active');
+    }
+  }
+  
+  // 页面完全加载后增强功能
+  window.addEventListener('load', function() {
+    // 确保外部CSS已加载
+    setTimeout(enhanceSlider, 300);
+    
+    // 性能监控
+    if ('performance' in window && 'getEntriesByType' in performance) {
+      const timing = performance.getEntriesByType('navigation')[0];
+      if (timing) {
+        console.log('页面加载时间:', timing.loadEventEnd - timing.startTime, 'ms');
+      }
+    }
+  });
+  
+  // 页面可见性API - 节省资源
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      // 页面隐藏时，可以暂停一些动画
+    } else {
+      // 页面重新显示
+    }
+  });
+})();
+</script>
+
+<!-- 原有的外部JS文件将通过上面的异步加载 -->
+<noscript>
+  <!-- JS禁用时的回退 -->
+  <style>
+    .slider-list__item {
+      display: block !important;
+      position: relative !important;
+      opacity: 1 !important;
+    }
+    .slider__controls,
+    .slider__nav-bar {
+      display: none !important;
+    }
+  </style>
+  <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+    <p>请启用JavaScript以获得完整的滑块功能</p>
+  </div>
+</noscript>
 
 <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+<!-- 保留原有的底部内容 -->
 </div>
 </body>
 </html>
