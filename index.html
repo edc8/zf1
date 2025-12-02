@@ -6,17 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>速达开锁</title>
 
-<!-- 预连接优化 - 增加CSS和JS文件预连接 -->
+<!-- 预连接优化 -->
 <link rel="preconnect" href="https://preview.cloud.189.cn">
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="//preview.cloud.189.cn">
-<link rel="dns-prefetch" href="//fonts.googleapis.com">
-
-<!-- 预连接本地资源 -->
-<link rel="preconnect" href="/css">
-<link rel="preconnect" href="/assets">
-<link rel="dns-prefetch" href="/css">
-<link rel="dns-prefetch" href="/assets">
 
 <!-- 内联关键CSS - 仅保证基础布局 -->
 <style>
@@ -103,81 +95,12 @@ body { overflow-x: hidden; }
   height: 100%;
   object-fit: cover;
 }
-
-/* 基础导航样式 - 防止FOUT */
-.slider__nav-bar {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  gap: 10px;
-}
-
-.nav-control {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.nav-control.active {
-  background: rgba(255, 255, 255, 1);
-}
-
-.slider__controls {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  transform: translateY(-50%);
-  display: flex;
-  justify-content: space-between;
-  padding: 0 20px;
-  z-index: 10;
-}
-
-.slider__arrow {
-  width: 40px;
-  height: 40px;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  position: relative;
-  cursor: pointer;
-}
-
-.slider__arrow::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 12px;
-  height: 12px;
-  border-left: 2px solid white;
-  border-top: 2px solid white;
-}
-
-.slider__arrow_prev::before {
-  transform: translate(-30%, -50%) rotate(-45deg);
-}
-
-.slider__arrow_next::before {
-  transform: translate(-70%, -50%) rotate(135deg);
-}
 </style>
 
-<!-- 预加载CSS文件 -->
+<!-- 异步加载外部CSS -->
 <link rel="preload" href="css/normalize.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="css/reset.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" href="assets/css/demo.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-
-<!-- 预加载JS文件 -->
-<link rel="preload" href="assets/js/anime.min.js" as="script">
-<link rel="preload" href="assets/js/demo.js" as="script">
-
-<!-- 回退方案 -->
 <noscript>
   <link rel="stylesheet" type="text/css" href="css/normalize.css" />
   <link rel="stylesheet" type="text/css" href="css/reset.css">
@@ -306,9 +229,6 @@ body { overflow-x: hidden; }
     
     // 初始化图片懒加载
     initImageLoading();
-    
-    // 初始化基本滑块功能
-    initBasicSlider();
   }
   
   function preloadNextImages() {
@@ -337,24 +257,16 @@ body { overflow-x: hidden; }
         };
         img.onerror = function() {
           console.warn('图片加载失败:', this.src);
-          this.parentElement.classList.add('img-placeholder');
         };
       }
     });
   }
   
   function loadExternalScripts() {
-    // 异步加载anime.min.js（使用预加载的资源）
+    // 异步加载anime.min.js
     loadScript('assets/js/anime.min.js', function() {
-      console.log('anime.js loaded');
       // anime.js加载完成后加载demo.js
-      loadScript('assets/js/demo.js', function() {
-        console.log('demo.js loaded');
-        // 如果demo.js中有初始化函数，可以在这里调用
-        if (typeof window.initSlider === 'function') {
-          window.initSlider();
-        }
-      });
+      loadScript('assets/js/demo.js');
     });
   }
   
@@ -362,48 +274,51 @@ body { overflow-x: hidden; }
     var script = document.createElement('script');
     script.src = src;
     script.async = true;
+    script.defer = true;
     
     if (callback) {
       script.onload = callback;
-      script.onerror = function() {
-        console.error('脚本加载失败:', src);
-        if (callback && typeof callback === 'function') {
-          callback();
-        }
-      };
     }
     
     document.body.appendChild(script);
   }
   
-  function initBasicSlider() {
+  // 简单的滑块功能增强（不改变原有demo.js行为）
+  function enhanceSlider() {
+    const slider = document.querySelector('.slider');
     const slides = document.querySelectorAll('.slider-list__item');
     const navControls = document.querySelectorAll('.nav-control');
     const prevArrow = document.querySelector('.slider__arrow_prev');
     const nextArrow = document.querySelector('.slider__arrow_next');
     
-    if (slides.length === 0) return;
+    if (!slider || slides.length === 0) return;
     
     let currentIndex = 0;
     
-    // 设置导航点点击事件
+    // 增强导航控制
     navControls.forEach((control, index) => {
-      control.addEventListener('click', function(e) {
+      // 移除原有事件（如果有）
+      control.replaceWith(control.cloneNode(true));
+      
+      const newControl = document.querySelectorAll('.nav-control')[index];
+      newControl.addEventListener('click', function(e) {
         e.preventDefault();
         goToSlide(index);
       });
     });
     
-    // 设置箭头点击事件
+    // 增强箭头控制
     if (prevArrow) {
-      prevArrow.addEventListener('click', function(e) {
+      prevArrow.replaceWith(prevArrow.cloneNode(true));
+      document.querySelector('.slider__arrow_prev').addEventListener('click', function(e) {
         e.preventDefault();
         goToSlide(currentIndex - 1);
       });
     }
     
     if (nextArrow) {
-      nextArrow.addEventListener('click', function(e) {
+      nextArrow.replaceWith(nextArrow.cloneNode(true));
+      document.querySelector('.slider__arrow_next').addEventListener('click', function(e) {
         e.preventDefault();
         goToSlide(currentIndex + 1);
       });
@@ -419,7 +334,6 @@ body { overflow-x: hidden; }
     });
     
     // 添加触摸滑动支持
-    const slider = document.querySelector('.slider');
     let touchStartX = 0;
     let touchEndX = 0;
     
@@ -484,26 +398,16 @@ body { overflow-x: hidden; }
     }
   }
   
-  // 页面完全加载后
+  // 页面完全加载后增强功能
   window.addEventListener('load', function() {
-    // 如果外部CSS加载太慢，确保基础功能可用
-    setTimeout(function() {
-      const allStylesLoaded = document.querySelectorAll('link[rel="stylesheet"]:not([onload])');
-      if (allStylesLoaded.length === 0) {
-        console.log('所有样式已加载');
-      }
-    }, 1000);
+    // 确保外部CSS已加载
+    setTimeout(enhanceSlider, 300);
     
     // 性能监控
     if ('performance' in window && 'getEntriesByType' in performance) {
-      const paintEntries = performance.getEntriesByType('paint');
-      paintEntries.forEach(entry => {
-        console.log(`${entry.name}: ${entry.startTime}ms`);
-      });
-      
       const timing = performance.getEntriesByType('navigation')[0];
       if (timing) {
-        console.log('页面完全加载时间:', timing.loadEventEnd - timing.startTime, 'ms');
+        console.log('页面加载时间:', timing.loadEventEnd - timing.startTime, 'ms');
       }
     }
   });
@@ -511,10 +415,8 @@ body { overflow-x: hidden; }
   // 页面可见性API - 节省资源
   document.addEventListener('visibilitychange', function() {
     if (document.hidden) {
-      console.log('页面隐藏，暂停非必要动画');
       // 页面隐藏时，可以暂停一些动画
     } else {
-      console.log('页面显示，恢复动画');
       // 页面重新显示
     }
   });
@@ -534,10 +436,6 @@ body { overflow-x: hidden; }
     .slider__nav-bar {
       display: none !important;
     }
-    .img-placeholder {
-      background: linear-gradient(45deg, #f0f0f0 25%, #e0e0e0 25%, #e0e0e0 50%, #f0f0f0 50%, #f0f0f0 75%, #e0e0e0 75%, #e0e0e0);
-      background-size: 40px 40px;
-    }
   </style>
   <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
     <p>请启用JavaScript以获得完整的滑块功能</p>
@@ -548,4 +446,4 @@ body { overflow-x: hidden; }
 <!-- 保留原有的底部内容 -->
 </div>
 </body>
-</html>
+</html>  
